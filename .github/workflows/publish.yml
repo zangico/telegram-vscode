@@ -8,6 +8,8 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    # Must match the Environment of the Marketplace Trusted Publishing policy.
+    environment: production
     permissions:
       contents: read
       id-token: write
