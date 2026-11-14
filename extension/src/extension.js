@@ -105,12 +105,20 @@ function activate(context) {
         logger,
         { dispose: stopServer },
         vscode.workspace.onDidChangeConfiguration((event) => {
-            if (event.affectsConfiguration(SECTION)) startServer(secrets);
+            if (event.affectsConfiguration(`${SECTION}.server`) || event.affectsConfiguration(`${SECTION}.proxy`)) {
+                startServer(secrets);
+            }
         }),
         secrets.onDidChange((event) => {
             if (event.key === PASSWORD_KEY) startServer(secrets);
         }),
         vscode.commands.registerCommand('telegram-vscode.setProxyPassword', () => setProxyPassword(secrets)),
+        vscode.commands.registerCommand('telegram-vscode.openSettings', () =>
+            vscode.commands.executeCommand('workbench.action.openSettings', `@ext:${context.extension.id}`)
+        ),
+        vscode.commands.registerCommand('telegram-vscode.buyMeACoffee', () =>
+            vscode.env.openExternal(vscode.Uri.parse('https://buymeacoffee.com/zangico'))
+        ),
         vscode.commands.registerCommand('telegram-vscode.openTelegramWeb', () => {
             const panel = vscode.window.createWebviewPanel(
                 'telegramWebviewTab',

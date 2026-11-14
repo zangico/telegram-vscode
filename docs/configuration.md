@@ -1,6 +1,6 @@
 # Configuration
 
-All settings are defined in `extension/package.json` under `contributes.configuration`, have `application` scope (user settings only; a workspace `.vscode/settings.json` is ignored), and appear in the Settings UI under "Telegram".
+All settings are defined in `extension/package.json` under `contributes.configuration`, have `application` scope (user settings only; a workspace `.vscode/settings.json` is ignored), and appear in the Settings UI under "Telegram". The gear icon in the Telegram sidebar header (command **Telegram: Open Settings**, `telegram-vscode.openSettings`) opens the Settings UI filtered to this extension.
 
 ## Settings
 
@@ -11,6 +11,7 @@ All settings are defined in `extension/package.json` under `contributes.configur
 | `telegram-vscode.proxy.host` | string | `""` | Proxy host name or IP address. IPv6 addresses go in square brackets, for example `[::1]`. Surrounding whitespace is trimmed. |
 | `telegram-vscode.proxy.port` | integer or null | `null` | Proxy port, 1 to 65535. Required when `type` is not `none`. |
 | `telegram-vscode.proxy.username` | string | `""` | User name, if the proxy requires authentication. Empty means no authentication. |
+| `telegram-vscode.showSupportButton` | boolean | `true` | Shows the heart (Buy Me a Coffee) button in the Telegram sidebar header. Does not restart the server. |
 
 Proxy types map to these URL schemes (`extension/src/proxyUrl.js`):
 
@@ -32,7 +33,7 @@ Command Palette: **Telegram: Set Proxy Password** (`telegram-vscode.setProxyPass
 
 ## What happens when settings change
 
-A change to any setting under `telegram-vscode` (the proxy settings or `server.port`), or to the stored password (including from another window), stops the running server and starts a new one with the new proxy URL and port. Overlapping restarts are collapsed (the latest wins).
+A change to a `telegram-vscode.proxy.*` setting or to `telegram-vscode.server.port`, or to the stored password (including from another window), stops the running server and starts a new one with the new proxy URL and port. Overlapping restarts are collapsed (the latest wins).
 
 - Invalid settings (unknown type, bad host, port outside 1-65535 or not an integer): no server is started, an error message "Telegram: ... Fix the "telegram-vscode.proxy" settings." is shown, and the reason is written to the Output channel `Telegram-VSCode`. There is no fallback to a direct connection. Webviews opened before the first successful start stay empty.
 - Open webviews are not reloaded when only the proxy changes. If Telegram shows a disconnected state after a change, reload the webview (Command Palette: **Developer: Reload Webviews**) or reopen the tab.

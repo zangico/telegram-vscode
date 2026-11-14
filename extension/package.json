@@ -5,6 +5,9 @@
   "version": "1.3.0",
   "publisher": "livingasync",
   "icon": "images/icon.png",
+  "sponsor": {
+    "url": "https://buymeacoffee.com/zangico"
+  },
   "categories": [
     "Other"
   ],
@@ -26,8 +29,32 @@
       {
         "command": "telegram-vscode.setProxyPassword",
         "title": "Telegram: Set Proxy Password"
+      },
+      {
+        "command": "telegram-vscode.openSettings",
+        "title": "Telegram: Open Settings",
+        "icon": "$(gear)"
+      },
+      {
+        "command": "telegram-vscode.buyMeACoffee",
+        "title": "Telegram: Buy Me a Coffee",
+        "icon": "$(heart)"
       }
     ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "telegram-vscode.buyMeACoffee",
+          "when": "view == telegramWebview && config.telegram-vscode.showSupportButton",
+          "group": "navigation@1"
+        },
+        {
+          "command": "telegram-vscode.openSettings",
+          "when": "view == telegramWebview",
+          "group": "navigation@2"
+        }
+      ]
+    },
     "configuration": {
       "title": "Telegram",
       "properties": {
@@ -77,6 +104,13 @@
           "scope": "application",
           "order": 3,
           "markdownDescription": "Proxy user name, if the proxy requires authentication. Set the password with the **Telegram: Set Proxy Password** command."
+        },
+        "telegram-vscode.showSupportButton": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "order": 100,
+          "markdownDescription": "Show the heart button in the Telegram sidebar header. Enjoying the extension? [Buy me a coffee](https://buymeacoffee.com/zangico) ☕"
         }
       }
     },

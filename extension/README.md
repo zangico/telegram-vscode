@@ -17,7 +17,7 @@ Log in with the QR code or your phone number.
 
 ## Proxy settings
 
-Set these in your user settings (Settings > Telegram):
+Set these in your user settings (Settings > Telegram, or the gear icon at the top of the Telegram sidebar):
 
 - `telegram-vscode.proxy.type`: `none` (default), `http`, `https`, `socks4` or `socks5`
 - `telegram-vscode.proxy.host`: proxy host name or IP (IPv6 in square brackets)
@@ -37,6 +37,10 @@ For the password run the command `Telegram: Set Proxy Password`. Invalid setting
 
 Every feedback would be appreciated
 If you need help or have any question, feel free to ask at zangico@gmail.com
+
+## Support
+
+If you find this extension useful, you can [buy me a coffee](https://buymeacoffee.com/zangico) ☕ (also from the heart icon at the top of the Telegram sidebar; hide it with `telegram-vscode.showSupportButton`)
 
 ## Release Notes
 
@@ -69,3 +73,4 @@ Fix for the proxy script not running on macos
 - The sidebar keeps its state when hidden
 - Telegram Web loads only after the local server is ready
 - Configurable local port (`telegram-vscode.server.port`) with automatic fallback to the next 9 ports when it is used by another program
+- Settings and Buy Me a Coffee buttons in the sidebar header

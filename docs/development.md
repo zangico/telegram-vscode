@@ -108,7 +108,10 @@ Install a local build with `code --install-extension telegram-vscode-<version>.v
 3. Make sure `extension/package-lock.json` is up to date and committed (`npm install`, then commit).
 4. `cd extension && npm ci && npm test`.
 5. Smoke test in an Extension Development Host: sidebar loads, tab command works, proxy settings apply.
-6. `npx @vscode/vsce package`, inspect the file list, then publish.
+6. `npx @vscode/vsce package` and inspect the file list.
+7. Commit, push to `master`, then tag and push the tag: `git tag v<version> && git push origin v<version>`.
+
+Pushing a `v*` tag runs [`.github/workflows/publish.yml`](../.github/workflows/publish.yml). The workflow checks that the tag matches `version` in `package.json`, runs `npm ci` and `npm test`, then runs `vsce publish --oidc`. Publishing uses the Marketplace's Trusted Publishing, so no access token is stored in the repository. The `livingasync` publisher has a Trusted Publishing policy that allows the `zangico/telegram-vscode` repository and the `publish.yml` workflow, with no GitHub environment. If the workflow file is renamed or the repository moves, update that policy on the Marketplace publisher page, or publishing fails at the token exchange.
 
 ## Code conventions
 

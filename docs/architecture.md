@@ -56,7 +56,7 @@ The server accepts any `[a-z0-9-]+` subdomain under `/__tg/`, but the upstream h
    - Otherwise it logs "Port N is used by another program, trying the next one" and tries the next port.
    - If no candidate is usable, it logs and sends `{ error: 'No usable port between A and B' }`; the extension shows an error asking to change `telegram-vscode.server.port`.
 5. The extension has no ready promise. It keeps `serverPort` and the set of open webviews. On `{ ready: port }` with a port different from `serverPort`, it sets the HTML of every open webview to an iframe on `http://localhost:<port>`. A webview opened before the first ready message gets its HTML when the message arrives, so Telegram Web never loads before a server answers. If the settings are invalid, no server runs and the webviews stay empty. Messages from a replaced (killed) child are ignored.
-6. A change to any setting under `telegram-vscode` (proxy or server port) or to the stored password restarts the server (a counter, `startRequest`, discards overlapping restarts). A restart that keeps the same port does not reload the open webviews; reload them if connections do not recover.
+6. A change to a `telegram-vscode.proxy.*` setting, to `telegram-vscode.server.port` or to the stored password restarts the server (a counter, `startRequest`, discards overlapping restarts). A restart that keeps the same port does not reload the open webviews; reload them if connections do not recover.
 7. The server exits on IPC `disconnect`, and the extension kills it in `stopServer` (called from `deactivate` and from the subscriptions). It never outlives the extension host.
 
 ## Port and origin

@@ -60,6 +60,10 @@ A VS Code extension that shows Telegram Web K (`https://web.telegram.org/k/`) in
 - [docs/troubleshooting.md](docs/troubleshooting.md)
 - [extension/README.md](extension/README.md) (marketplace page, release notes)
 
+## Support
+
+If you find this extension useful, you can [buy me a coffee](https://buymeacoffee.com/zangico).
+
 ## License
 
 MIT, see [extension/LICENSE](extension/LICENSE).
