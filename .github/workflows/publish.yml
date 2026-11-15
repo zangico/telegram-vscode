@@ -33,4 +33,5 @@ jobs:
       - run: npm ci
       - run: npm test
       - name: Publish to the Visual Studio Marketplace
-        run: npx --yes @vscode/vsce@4.1.1 publish --oidc
+        # --skip-duplicate: re-pushing a released tag succeeds instead of failing on the existing version.
+        run: npx --yes @vscode/vsce@4.1.1 publish --oidc --skip-duplicate
