@@ -96,7 +96,7 @@ To confirm a proxy is used, point `proxyUrl` at it and watch its log; with an un
 ```sh
 cd extension
 npx @vscode/vsce package      # produces telegram-vscode-<version>.vsix
-npx @vscode/vsce publish      # needs a Marketplace token for publisher livingasync
+npx @vscode/vsce publish      # needs a Marketplace token for publisher zangico
 ```
 
 Install a local build with `code --install-extension telegram-vscode-<version>.vsix`. `*.vsix` is git-ignored.
@@ -111,7 +111,7 @@ Install a local build with `code --install-extension telegram-vscode-<version>.v
 6. `npx @vscode/vsce package` and inspect the file list.
 7. Commit, push to `master`, then tag and push the tag: `git tag v<version> && git push origin v<version>`.
 
-Pushing a `v*` tag runs [`.github/workflows/publish.yml`](../.github/workflows/publish.yml). The workflow checks that the tag matches `version` in `package.json`, runs `npm ci` and `npm test`, then runs `vsce publish --oidc`. Publishing uses the Marketplace's Trusted Publishing, so no access token is stored in the repository. The `livingasync` publisher has a Trusted Publishing policy that allows the `zangico/telegram-vscode` repository and the `publish.yml` workflow, and the `production` GitHub environment (the job declares `environment: production`). Protection rules for that environment, such as required reviewers or a `v*` tag filter, can be set under the repository's Settings > Environments. If the workflow file or the environment is renamed, or the repository moves, update that policy on the Marketplace publisher page, or publishing fails at the token exchange.
+Pushing a `v*` tag runs [`.github/workflows/publish.yml`](../.github/workflows/publish.yml). The workflow checks that the tag matches `version` in `package.json`, runs `npm ci` and `npm test`, then runs `vsce publish --oidc`. Publishing uses the Marketplace's Trusted Publishing, so no access token is stored in the repository. The `zangico` publisher has a Trusted Publishing policy that allows the `zangico/telegram-vscode` repository and the `publish.yml` workflow, and the `production` GitHub environment (the job declares `environment: production`). Protection rules for that environment, such as required reviewers or a `v*` tag filter, can be set under the repository's Settings > Environments. If the workflow file or the environment is renamed, or the repository moves, update that policy on the Marketplace publisher page, or publishing fails at the token exchange.
 
 ## Code conventions
 

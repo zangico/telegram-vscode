@@ -1,5 +1,7 @@
 ## Features
 
+> **Moved:** this extension is now published as `zangico.telegram-vscode` (previously `livingasync.telegram-vscode`). Install this one and uninstall the old one. Settings carry over; set the proxy password again.
+
 Telegram for VSCode: use Telegram Web inside VS Code, in the sidebar or in an editor tab.
 
 - Optional proxy for all Telegram traffic: HTTP, HTTPS, SOCKS4 or SOCKS5, with authentication.
@@ -74,3 +76,10 @@ Fix for the proxy script not running on macos
 - Telegram Web loads only after the local server is ready
 - Configurable local port (`telegram-vscode.server.port`) with automatic fallback to the next 9 ports when it is used by another program
 - Settings and Buy Me a Coffee buttons in the sidebar header
+
+### 2.0.0
+
+- The extension moved to the Marketplace publisher `zangico`; the new id is `zangico.telegram-vscode`
+- If you use `livingasync.telegram-vscode`, install this one and uninstall the old one
+- Settings carry over; the proxy password must be set again (SecretStorage is per extension id)
+- Telegram may ask you to log in again
