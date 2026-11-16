@@ -6,7 +6,7 @@
 |---|---|---|---|
 | Extension entry | `extension/src/extension.js` | VS Code extension host | Registers the commands and the sidebar view, builds the webview HTML (an iframe to `http://localhost:<port>`), reads settings and the password, forks and stops the server, and points the open webviews at the port the server reports. |
 | Local server | `extension/src/server.js` | Child process (`child_process.fork`, `ELECTRON_RUN_AS_NODE=1`) | Reverse proxy built on `http` + `http-proxy-middleware` 2.x. Serves Telegram Web, strips framing headers, injects the patch, routes `/__tg/...` requests, applies the outbound proxy. |
-| Patch | `extension/src/patch.js` | Browser (page, workers, service worker) | `rerouteTelegramTraffic(scope)`: wraps `WebSocket` and `fetch` so Telegram URLs go to the local server. Exported as `PATCH`, the source text `(fn)(self);\n`. |
+| Patch | `extension/src/patch.js` | Browser (page, workers, service worker) | `rerouteTelegramTraffic(scope)`: wraps `WebSocket` and `fetch` so Telegram URLs go to the local server. Exported as `PATCH`, the source text `(fn)(self);\n`. Also exports `nameSession(source)`, used by `server.js` to rename the session. |
 | Proxy URL builder | `extension/src/proxyUrl.js` | Extension host (and tests) | `buildProxyUrl(settings, password)`: validates settings, returns a proxy URL, `null` (direct) or throws. |
 | Tests | `extension/test/proxy.test.js`, `extension/test/server.test.js` | Node (`node --test`) | Unit tests for `proxyUrl.js` and `patch.js`; `server.test.js` forks the real server to test the port fallback. |
 
@@ -28,7 +28,7 @@ Page and asset requests:
 
 1. The webview HTML contains `<iframe src="http://localhost:<port>">`, where `<port>` is the one the server reported.
 2. The server maps a request path `p` to `https://web.telegram.org/k` + `p` (`/` becomes `/k/`), via `pathRewrite`.
-3. The response goes through `responseInterceptor`: `X-Frame-Options` is removed (so the page can be framed); for JavaScript responses with status 200 the `PATCH` text is prepended and `ETag`/`Last-Modified` are removed.
+3. The response goes through `responseInterceptor`: `X-Frame-Options` is removed (so the page can be framed); for JavaScript responses with status 200 the `PATCH` text is prepended and `ETag`/`Last-Modified` are removed. In a script that contains `customDeviceModel`, `nameSession` turns `deviceModel:this.customDeviceModel||` into `deviceModel:this.customDeviceModel||"telegram-vscode"||`, so the session is listed as `telegram-vscode` in Telegram's devices instead of the browser user agent. A device name set in Telegram Web K's own settings still wins. If a Telegram Web K release changes that expression, nothing is replaced and the session falls back to the user agent.
 4. Incoming `If-None-Match` and `If-Modified-Since` are deleted, so the server always receives a full body. Telegram serves assets with `cache-control: max-age=3600`, so a copy cached before patching could otherwise be revalidated with a 304 and used unpatched.
 5. Upstream requests and WebSocket upgrades get `Origin: https://web.telegram.org`, set through `headers` (proxy agents connect asynchronously, so `onProxyReq` would run after the headers are sent).
 

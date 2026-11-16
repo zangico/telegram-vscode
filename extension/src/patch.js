@@ -28,7 +28,14 @@ function rerouteTelegramTraffic(scope) {
     }
 }
 
+// Telegram Web K names the session after the browser user agent unless the user set a device name in its
+// settings. Its MTProto worker builds that name in a single expression, which server.js rewrites as it serves
+// the script, so the session reads "telegram-vscode" while a name chosen in Telegram still wins.
+const DEVICE_MODEL = /deviceModel:this\.customDeviceModel\|\|/;
+const nameSession = (source) => source.replace(DEVICE_MODEL, '$&"telegram-vscode"||');
+
 module.exports = {
     rerouteTelegramTraffic,
+    nameSession,
     PATCH: `(${rerouteTelegramTraffic})(self);\n`,
 };

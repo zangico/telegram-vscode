@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert');
 const { buildProxyUrl } = require('../src/proxyUrl');
-const { rerouteTelegramTraffic } = require('../src/patch');
+const { rerouteTelegramTraffic, nameSession } = require('../src/patch');
 
 test('buildProxyUrl maps settings to proxy URLs', () => {
     assert.strictEqual(buildProxyUrl({ type: 'none' }), null);
@@ -43,4 +43,13 @@ test('rerouteTelegramTraffic sends Telegram connections to the local server', ()
 
     assert.deepStrictEqual(opened, ['ws://localhost:49152/__tg/kws2-1/apiws', 'wss://example.com/socket']);
     assert.deepStrictEqual(fetched, ['http://localhost:49152/__tg/kws4/apiw1?x=1', 'https://web.telegram.org/k/']);
+});
+
+test('nameSession names the Web K session unless the user chose a name', () => {
+    const worker = 'getInitConnectionParams:()=>({id:a.id,deviceModel:this.customDeviceModel||Pi().USER_AGENT||`Unknown UserAgent`,';
+    assert.strictEqual(
+        nameSession(worker),
+        'getInitConnectionParams:()=>({id:a.id,deviceModel:this.customDeviceModel||"telegram-vscode"||Pi().USER_AGENT||`Unknown UserAgent`,'
+    );
+    assert.strictEqual(nameSession('this.customDeviceModel=``'), 'this.customDeviceModel=``');
 });

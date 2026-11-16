@@ -5,7 +5,7 @@ const http = require('http');
 const { createProxyMiddleware, responseInterceptor } = require('http-proxy-middleware');
 const { SocksProxyAgent } = require('socks-proxy-agent');
 const { HttpsProxyAgent } = require('https-proxy-agent');
-const { PATCH } = require('./patch');
+const { PATCH, nameSession } = require('./patch');
 
 const HOST = '127.0.0.1';
 const PORT_ATTEMPTS = 10;
@@ -56,7 +56,8 @@ function createServer(proxyUrl) {
             if (!isScript || proxyRes.statusCode !== 200) return buffer;
             res.removeHeader('etag');
             res.removeHeader('last-modified');
-            return Buffer.concat([Buffer.from(PATCH), buffer]);
+            const script = Buffer.concat([Buffer.from(PATCH), buffer]);
+            return buffer.includes('customDeviceModel') ? Buffer.from(nameSession(script.toString())) : script;
         }),
     });
 
