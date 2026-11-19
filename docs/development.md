@@ -95,11 +95,11 @@ To confirm a proxy is used, point `proxyUrl` at it and watch its log; with an un
 
 ```sh
 cd extension
-npx @vscode/vsce package      # produces telegram-vscode-<version>.vsix
+npx @vscode/vsce package      # produces telegram-sidebar-<version>.vsix
 npx @vscode/vsce publish      # needs a Marketplace token for publisher zangico
 ```
 
-Install a local build with `code --install-extension telegram-vscode-<version>.vsix`. `*.vsix` is git-ignored.
+Install a local build with `code --install-extension telegram-sidebar-<version>.vsix`. `*.vsix` is git-ignored.
 
 ## Release checklist
 

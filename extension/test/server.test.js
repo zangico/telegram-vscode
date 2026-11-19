@@ -44,7 +44,7 @@ test('server skips ports held by other programs and shares ports held by itself'
             res.on('end', () => resolve(data));
         }).on('error', reject);
     });
-    assert.strictEqual(body, 'telegram-vscode');
+    assert.strictEqual(body, 'telegram-sidebar');
 });
 
 test('server reports an error when every candidate port is taken', async (t) => {

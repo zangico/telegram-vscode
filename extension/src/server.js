@@ -10,7 +10,7 @@ const { PATCH, nameSession } = require('./patch');
 const HOST = '127.0.0.1';
 const PORT_ATTEMPTS = 10;
 const PING_PATH = '/__telegram-vscode/ping';
-const PING_REPLY = 'telegram-vscode';
+const PING_REPLY = 'telegram-sidebar';
 const UPSTREAM = 'https://web.telegram.org';
 const ORIGIN = 'https://web.telegram.org';
 // /__tg/<subdomain>/<path> -> https://<subdomain>.web.telegram.org/<path> (rewritten by patch.js)

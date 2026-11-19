@@ -10,7 +10,7 @@
 | Proxy URL builder | `extension/src/proxyUrl.js` | Extension host (and tests) | `buildProxyUrl(settings, password)`: validates settings, returns a proxy URL, `null` (direct) or throws. |
 | Tests | `extension/test/proxy.test.js`, `extension/test/server.test.js` | Node (`node --test`) | Unit tests for `proxyUrl.js` and `patch.js`; `server.test.js` forks the real server to test the port fallback. |
 
-Constants in `server.js`: `HOST = '127.0.0.1'`, `PORT_ATTEMPTS = 10`, `PING_PATH = '/__telegram-vscode/ping'`, `PING_REPLY = 'telegram-vscode'`, `UPSTREAM = ORIGIN = 'https://web.telegram.org'`, `DC_PATH = /^\/__tg\/([a-z0-9-]+)(\/.*)?$/`.
+Constants in `server.js`: `HOST = '127.0.0.1'`, `PORT_ATTEMPTS = 10`, `PING_PATH = '/__telegram-vscode/ping'`, `PING_REPLY = 'telegram-sidebar'`, `UPSTREAM = ORIGIN = 'https://web.telegram.org'`, `DC_PATH = /^\/__tg\/([a-z0-9-]+)(\/.*)?$/`.
 
 Command and view IDs: `telegram-vscode.openTelegramWeb`, `telegram-vscode.setProxyPassword`, view `telegramWebview` in container `telegram-sidebar`, webview panel type `telegramWebviewTab`. Secret key: `telegram-vscode.proxy.password`. Output channel: `Telegram-VSCode`.
 
@@ -62,6 +62,8 @@ The server accepts any `[a-z0-9-]+` subdomain under `/__tg/`, but the upstream h
 ## Port and origin
 
 The webview content is an iframe with origin `http://localhost:<port>`. Telegram's login session (IndexedDB, localStorage, service worker) lives in the storage of that origin, so each port has its own login. If the port changed on every start the user would be logged out every time, so the port is a setting (`telegram-vscode.server.port`, default 49152) and the fallback is deterministic: the base port, then base+1, up to 10 candidates. When the configured port is free again the extension returns to it, and to its login, on the next start. Only one server can own a port at a time; windows share it (see multi-window behaviour in [configuration.md](configuration.md)).
+
+The server of the old `livingasync.telegram-vscode` extension answers `telegram-vscode`, so while it runs Telegram Sidebar treats its port as taken by another program and moves to the next one.
 
 A server binary of a version before 1.3.0 that is still running holds 49152 and does not answer the ping, so 1.3.0 falls back to 49153 (a new login) until that process ends, for example after a reboot.
 

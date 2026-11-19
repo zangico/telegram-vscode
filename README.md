@@ -1,6 +1,6 @@
 # Telegram for VS Code
 
-> **Moved:** this extension is now published as `zangico.telegram-vscode` (previously `livingasync.telegram-vscode`). Install this one and uninstall the old one. Settings carry over; set the proxy password again.
+> **Moved:** this extension is now published as Telegram Sidebar, `zangico.telegram-sidebar` (previously `livingasync.telegram-vscode`). Install this one and uninstall the old one. Settings carry over; set the proxy password again, and Telegram may ask you to log in again.
 
 A VS Code extension that shows Telegram Web K (`https://web.telegram.org/k/`) inside VS Code, in the activity-bar sidebar or in an editor tab. A small local server, started by the extension on `127.0.0.1` (port 49152 by default, configurable), serves Telegram Web to the webview and sends all Telegram traffic, including the MTProto WebSockets, through an optional HTTP, HTTPS, SOCKS4 or SOCKS5 proxy.
 
