@@ -12,10 +12,13 @@ A VS Code extension that shows Telegram Web K (`https://web.telegram.org/k/`) in
 - Fail closed: invalid proxy settings never fall back to a direct connection.
 - The local server runs on VS Code's own Node runtime, listens on loopback only and stops with the extension.
 - The sidebar keeps its state while hidden (`retainContextWhenHidden`).
+- Unread count on the sidebar badge and in the status bar (the count Telegram Web K passes to `navigator.setAppBadge`: unread unmuted chats).
+- Notifications as VS Code messages with Do Not Disturb, optional message preview and muting while debugging.
+- Commands: **Telegram: Copy Selection for Chat**, **Telegram: Toggle Chat** (`Ctrl+Alt+G`, `Cmd+Alt+G` on macOS), **Telegram: Move View...**, and the `telegram-vscode.zoom` setting.
 
 ## Quick usage
 
-1. Install the extension (publisher `zangico`, name `telegram-vscode`; VS Code >= 1.91).
+1. Install the extension (publisher `zangico`, name `telegram-sidebar`; VS Code >= 1.91).
 2. Click the Telegram icon in the activity bar, or run **Open Telegram in Tab** from the Command Palette.
 3. Log in with the QR code or the phone number (passkeys do not work, see [troubleshooting](docs/troubleshooting.md)).
 4. To use a proxy, set `telegram-vscode.proxy.type`, `.host`, `.port` (and optionally `.username` plus the **Telegram: Set Proxy Password** command). See [docs/configuration.md](docs/configuration.md).
@@ -42,15 +45,17 @@ A VS Code extension that shows Telegram Web K (`https://web.telegram.org/k/`) in
     ├── LICENSE                MIT license
     ├── .vscodeignore          Files excluded from the .vsix (test/**)
     ├── images/
-    │   ├── icon.png           Extension icon
+    │   ├── icon.png           Extension icon (rendered from icon.svg)
+    │   ├── icon.svg           Extension icon source
     │   └── sidebar_icon.svg   Activity-bar icon
     ├── src/
     │   ├── extension.js       Extension host entry: commands, webviews, server lifecycle
     │   ├── server.js          Local reverse proxy; runs as a child process
-    │   ├── patch.js           Script prepended to every JavaScript response
+    │   ├── patch.js           Script prepended to every JavaScript response (reroute, page bridge, session name)
     │   └── proxyUrl.js        Settings -> proxy URL (validation)
     └── test/
-        ├── proxy.test.js      node:test unit tests for proxyUrl.js and patch.js
+        ├── bridge.test.js     node:test unit tests for the page-to-extension bridge in patch.js
+        ├── proxy.test.js      node:test unit tests for proxyUrl.js, the reroute patch and nameSession
         └── server.test.js     node:test tests that fork the real server (port fallback, sharing, take-over)
 ```
 

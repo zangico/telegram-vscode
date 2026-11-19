@@ -2,7 +2,7 @@
   "name": "telegram-sidebar",
   "displayName": "Telegram Sidebar",
   "description": "Telegram for VSCode",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "publisher": "zangico",
   "icon": "images/icon.png",
   "sponsor": {
@@ -39,6 +39,29 @@
         "command": "telegram-vscode.buyMeACoffee",
         "title": "Telegram: Buy Me a Coffee",
         "icon": "$(heart)"
+      },
+      {
+        "command": "telegram-vscode.toggleDoNotDisturb",
+        "title": "Telegram: Toggle Do Not Disturb"
+      },
+      {
+        "command": "telegram-vscode.sendSelection",
+        "title": "Telegram: Copy Selection for Chat"
+      },
+      {
+        "command": "telegram-vscode.toggle",
+        "title": "Telegram: Toggle Chat"
+      },
+      {
+        "command": "telegram-vscode.moveView",
+        "title": "Telegram: Move View…"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "telegram-vscode.toggle",
+        "key": "ctrl+alt+g",
+        "mac": "cmd+alt+g"
       }
     ],
     "menus": {
@@ -52,6 +75,13 @@
           "command": "telegram-vscode.openSettings",
           "when": "view == telegramWebview",
           "group": "navigation@2"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "telegram-vscode.sendSelection",
+          "when": "editorHasSelection",
+          "group": "9_cutcopypaste@9"
         }
       ]
     },
@@ -104,6 +134,43 @@
           "scope": "application",
           "order": 3,
           "markdownDescription": "Proxy user name, if the proxy requires authentication. Set the password with the **Telegram: Set Proxy Password** command."
+        },
+        "telegram-vscode.zoom": {
+          "type": "integer",
+          "minimum": 50,
+          "maximum": 200,
+          "default": 100,
+          "scope": "application",
+          "order": 30,
+          "markdownDescription": "Zoom of the Telegram view, in percent."
+        },
+        "telegram-vscode.notifications.enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "order": 40,
+          "markdownDescription": "Show a VS Code notification for each Telegram notification. The Telegram view must have been opened in this window."
+        },
+        "telegram-vscode.notifications.showPreview": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "order": 41,
+          "markdownDescription": "Include the message text in notifications."
+        },
+        "telegram-vscode.notifications.muteWhileDebugging": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "order": 42,
+          "markdownDescription": "Do not show notifications while a debug session is active. Use **Telegram: Toggle Do Not Disturb** to mute them manually."
+        },
+        "telegram-vscode.statusBar.enabled": {
+          "type": "boolean",
+          "default": true,
+          "scope": "application",
+          "order": 50,
+          "markdownDescription": "Show the unread chats counter and the Do Not Disturb indicator in the status bar."
         },
         "telegram-vscode.showSupportButton": {
           "type": "boolean",

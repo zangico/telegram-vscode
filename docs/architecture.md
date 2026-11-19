@@ -4,15 +4,15 @@
 
 | Component | File | Runs in | Responsibility |
 |---|---|---|---|
-| Extension entry | `extension/src/extension.js` | VS Code extension host | Registers the commands and the sidebar view, builds the webview HTML (an iframe to `http://localhost:<port>`), reads settings and the password, forks and stops the server, and points the open webviews at the port the server reports. |
+| Extension entry | `extension/src/extension.js` | VS Code extension host | Registers the commands and the sidebar view, builds the webview HTML (an iframe to `http://localhost:<port>`, scaled by `zoom`, and a script that forwards the page's messages), reads settings and the password, forks and stops the server, points the open webviews at the port the server reports, and shows the unread badge, status bar items and notifications. |
 | Local server | `extension/src/server.js` | Child process (`child_process.fork`, `ELECTRON_RUN_AS_NODE=1`) | Reverse proxy built on `http` + `http-proxy-middleware` 2.x. Serves Telegram Web, strips framing headers, injects the patch, routes `/__tg/...` requests, applies the outbound proxy. |
-| Patch | `extension/src/patch.js` | Browser (page, workers, service worker) | `rerouteTelegramTraffic(scope)`: wraps `WebSocket` and `fetch` so Telegram URLs go to the local server. Exported as `PATCH`, the source text `(fn)(self);\n`. Also exports `nameSession(source)`, used by `server.js` to rename the session. |
+| Patch | `extension/src/patch.js` | Browser (page, workers, service worker) | `rerouteTelegramTraffic(scope)`: wraps `WebSocket` and `fetch` so Telegram URLs go to the local server. `bridgeToExtension(scope)`: in the framed page only, forwards the unread count and notifications to the extension. Exported as `PATCH`, the source text `(reroute)(self);\n(bridge)(self);\n`. Also exports `nameSession(source)`, used by `server.js` to rename the session. |
 | Proxy URL builder | `extension/src/proxyUrl.js` | Extension host (and tests) | `buildProxyUrl(settings, password)`: validates settings, returns a proxy URL, `null` (direct) or throws. |
 | Tests | `extension/test/proxy.test.js`, `extension/test/server.test.js` | Node (`node --test`) | Unit tests for `proxyUrl.js` and `patch.js`; `server.test.js` forks the real server to test the port fallback. |
 
 Constants in `server.js`: `HOST = '127.0.0.1'`, `PORT_ATTEMPTS = 10`, `PING_PATH = '/__telegram-vscode/ping'`, `PING_REPLY = 'telegram-sidebar'`, `UPSTREAM = ORIGIN = 'https://web.telegram.org'`, `DC_PATH = /^\/__tg\/([a-z0-9-]+)(\/.*)?$/`.
 
-Command and view IDs: `telegram-vscode.openTelegramWeb`, `telegram-vscode.setProxyPassword`, view `telegramWebview` in container `telegram-sidebar`, webview panel type `telegramWebviewTab`. Secret key: `telegram-vscode.proxy.password`. Output channel: `Telegram-VSCode`.
+Command and view IDs: `telegram-vscode.openTelegramWeb`, `telegram-vscode.setProxyPassword`, `telegram-vscode.openSettings`, `telegram-vscode.buyMeACoffee`, `telegram-vscode.toggleDoNotDisturb`, `telegram-vscode.sendSelection`, `telegram-vscode.toggle`, `telegram-vscode.moveView`, view `telegramWebview` in container `telegram-sidebar`, webview panel type `telegramWebviewTab`. Secret key: `telegram-vscode.proxy.password`. Output channel: `Telegram-VSCode`.
 
 ## Request flow
 
@@ -44,6 +44,13 @@ Telegram Web K opens its MTProto WebSockets to `wss://kws<dc>[-1].web.telegram.o
 - The server's `router` sends `/__tg/<sub>/...` to `https://<sub>.web.telegram.org`, and `pathRewrite` strips the `/__tg/<sub>` prefix. WebSocket upgrades are handled by `server.on('upgrade', proxy.upgrade)` and use the same router and agent.
 
 The server accepts any `[a-z0-9-]+` subdomain under `/__tg/`, but the upstream host is always `<sub>.web.telegram.org`.
+
+## Page to extension channel
+
+`bridgeToExtension(scope)` in `patch.js` runs only in a window with a different parent (the iframe in the webview); workers and the service worker have no `parent`, and a guard (`__telegramVscodeBridge`) keeps it to one run. It posts `{ source: 'telegram-vscode', type, ... }` to the parent. A script in the webview HTML accepts only messages whose `event.source` is the iframe's window and whose `data.source` is `telegram-vscode`, and forwards them with `acquireVsCodeApi().postMessage`. The extension validates every field in `handleMessage`. Nothing flows from the extension to the page.
+
+- `unread`: Telegram Web K's notifications manager binds `navigator.setAppBadge` when it is created and calls it with the number of unread unmuted chats of the main folder (`folder_unread` for folder 0). The patch, which runs before Telegram's scripts, replaces `navigator.setAppBadge` and `clearAppBadge` with functions that post the count (0 for anything that is not a positive integer). The extension sets the sidebar view badge and the status bar item.
+- `notify`: `scope.Notification` is replaced by a stand-in with `permission` `granted`, a `requestPermission()` that resolves `granted` (and calls a callback argument), and a constructor that posts `{ title, body }` and returns an `EventTarget` with a no-op `close()` and settable `onclick`, `onclose`, `onerror` and `onshow`. Telegram Web K decides when to notify. The extension shows an information message unless notifications are disabled, Do Not Disturb is on (`telegram-vscode.doNotDisturb` in global state), or a debug session is active and `muteWhileDebugging` is set. The "Open" button focuses the sidebar view.
 
 ## Process lifecycle
 

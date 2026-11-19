@@ -39,6 +39,10 @@ npm test        # node --test
 - `buildProxyUrl`: type-to-scheme mapping (`socks5h`, `socks4a`, `http`, `https`), `none` and empty settings give `null`, host trimming, IPv6 in brackets, credential percent-encoding, rejection of unknown types, empty/injected/unbracketed hosts and bad ports.
 - `rerouteTelegramTraffic`: `WebSocket` and `fetch` URLs for `*.web.telegram.org` are rewritten to `/__tg/<sub>/...` on the local host, other URLs are untouched, and calling it twice does not wrap twice.
 
+`extension/test/proxy.test.js` also covers `nameSession` (the Web K device model expression gets `"telegram-vscode"`, other text is unchanged).
+
+`extension/test/bridge.test.js` covers `bridgeToExtension` with a fake scope: no stand-ins outside a frame or in a worker, `navigator.setAppBadge`/`clearAppBadge` posted as unread counts (invalid values as 0), the `Notification` stand-in (granted permission, `requestPermission` with promise and callback, posted title and body) and the shape of `PATCH`.
+
 `extension/test/server.test.js` forks the real `server.js` with `{ proxyUrl: null, port }` on a random base port:
 
 - A foreign HTTP server on the base port: the server replies `{ ready: base + 1 }`.

@@ -11,6 +11,11 @@ All settings are defined in `extension/package.json` under `contributes.configur
 | `telegram-vscode.proxy.host` | string | `""` | Proxy host name or IP address. IPv6 addresses go in square brackets, for example `[::1]`. Surrounding whitespace is trimmed. |
 | `telegram-vscode.proxy.port` | integer or null | `null` | Proxy port, 1 to 65535. Required when `type` is not `none`. |
 | `telegram-vscode.proxy.username` | string | `""` | User name, if the proxy requires authentication. Empty means no authentication. |
+| `telegram-vscode.zoom` | integer | `100` | Zoom of the Telegram view in percent, 50 to 200. |
+| `telegram-vscode.notifications.enabled` | boolean | `true` | Show Telegram notifications as VS Code information messages. |
+| `telegram-vscode.notifications.showPreview` | boolean | `true` | Include the message text in the notification. |
+| `telegram-vscode.notifications.muteWhileDebugging` | boolean | `true` | Skip notifications while a debug session is active. |
+| `telegram-vscode.statusBar.enabled` | boolean | `true` | Show the unread counter and the Do Not Disturb indicator in the status bar. |
 | `telegram-vscode.showSupportButton` | boolean | `true` | Shows the heart (Buy Me a Coffee) button in the Telegram sidebar header. Does not restart the server. |
 
 Proxy types map to these URL schemes (`extension/src/proxyUrl.js`):
@@ -21,6 +26,17 @@ Proxy types map to these URL schemes (`extension/src/proxyUrl.js`):
 | `https` | `https://` | TLS to the proxy itself (`https-proxy-agent`). |
 | `socks4` | `socks4a://` | Host names are resolved by the proxy (`socks-proxy-agent`). |
 | `socks5` | `socks5h://` | Host names are resolved by the proxy (`socks-proxy-agent`). |
+
+## Commands
+
+| Command | Meaning |
+|---|---|
+| **Telegram: Toggle Do Not Disturb** (`telegram-vscode.toggleDoNotDisturb`) | Mutes or unmutes notifications. Stored in the extension's global state; the status bar shows `$(bell-slash)` while it is on (click it to turn it off). |
+| **Telegram: Copy Selection for Chat** (`telegram-vscode.sendSelection`) | In the editor context menu when text is selected. Copies the selection as a code block (three backticks around the code) to the clipboard and reveals the sidebar; paste it into a chat. |
+| **Telegram: Toggle Chat** (`telegram-vscode.toggle`) | `Ctrl+Alt+G` (`Cmd+Alt+G` on macOS). Closes the sidebar if the Telegram view is visible, otherwise focuses it. |
+| **Telegram: Move View...** (`telegram-vscode.moveView`) | Focuses the view and opens VS Code's "Move View" picker (bottom panel, secondary sidebar...). Dragging the activity-bar icon also works. |
+
+Notifications and the unread counter come from the Telegram page, so they start once the Telegram view (or a tab) has been opened in the window and you are logged in. Telegram Web K decides when to notify (for example not for muted chats, and not while its page has focus).
 
 ## Password command
 

@@ -35,3 +35,6 @@ Root causes are explained in [architecture.md](architecture.md#known-limitations
 | Logged out after an update | The login lives in the storage of the origin `http://localhost:<port>`; clearing webview data or a different port (changed setting or fallback) resets it. | Log in again. The session on each port survives normal restarts. |
 | Sidebar and tab ask for login separately | They are separate webviews; sharing depends on Chromium storage partitioning (not verified). | Log in in each, or use one of them. |
 | IPv6 proxy address is rejected | Host must be in square brackets. | Use `[::1]`, not `::1`. |
+| No notifications or unread badge after starting VS Code | They come from the Telegram page, which only runs once the Telegram view (or a tab) has been opened. | Open the Telegram view once; it keeps running while hidden. |
+| No notification for a message | Do Not Disturb is on (bell-slash in the status bar), a debug session is active, `telegram-vscode.notifications.enabled` is off, the chat is muted, or Telegram's own notification settings are off. | Toggle Do Not Disturb, change the `notifications` settings, or check Settings > Notifications in Telegram. |
+| The unread counter differs from the number in Telegram | The counter shows unread unmuted chats, as Telegram Web K reports them to the Badging API. | None. |

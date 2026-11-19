@@ -6,6 +6,12 @@ Telegram for VSCode: use Telegram Web inside VS Code, in the sidebar or in an ed
 
 - Optional proxy for all Telegram traffic: HTTP, HTTPS, SOCKS4 or SOCKS5, with authentication.
 - The proxy password is kept in the operating system keychain.
+- Unread badge on the sidebar icon and a status bar counter.
+- Notifications as VS Code messages, with Do Not Disturb (`Telegram: Toggle Do Not Disturb`) and muting while you debug.
+- `Telegram: Copy Selection for Chat` (editor context menu) copies the selected code as a code block; paste it into a chat.
+- `Telegram: Toggle Chat` (`Ctrl+Alt+G`, `Cmd+Alt+G` on macOS) shows or hides the sidebar.
+- `Telegram: Move View...` moves Telegram to the bottom panel or the secondary sidebar (dragging the activity-bar icon works too).
+- `telegram-vscode.zoom` scales the Telegram view (50-200%).
 
 ## Usage
 
@@ -29,6 +35,8 @@ Set these in your user settings (Settings > Telegram, or the gear icon at the to
 Local port:
 
 - `telegram-vscode.server.port`: local port of the server that serves Telegram Web (default `49152`, 1024-65535). If it is used by another program, the next 9 ports are tried in order. Telegram keeps a separate login for each port, so changing the port means logging in again.
+
+Other settings: `telegram-vscode.zoom`, `telegram-vscode.notifications.enabled`, `.showPreview`, `.muteWhileDebugging` and `telegram-vscode.statusBar.enabled`. Notifications and the unread counter work once the Telegram view has been opened in the window.
 
 For the password run the command `Telegram: Set Proxy Password`. Invalid settings never fall back to a direct connection: Telegram is not loaded and an error is shown.
 
@@ -77,10 +85,6 @@ Fix for the proxy script not running on macos
 - Configurable local port (`telegram-vscode.server.port`) with automatic fallback to the next 9 ports when it is used by another program
 - Settings and Buy Me a Coffee buttons in the sidebar header
 
-### 2.1.1
-
-- New icon
-
 ### 2.1.0
 
 - The extension is now Telegram Sidebar, published by `zangico`; the new id is `zangico.telegram-sidebar`
@@ -88,3 +92,13 @@ Fix for the proxy script not running on macos
 - Settings carry over; the proxy password must be set again (SecretStorage is per extension id)
 - Telegram may ask you to log in again
 - The session is listed as "telegram-vscode" in Telegram's devices (a device name set in Telegram Web's settings still wins)
+
+### 2.1.1
+
+- New icon
+
+### 2.2.0
+
+- Unread badge on the sidebar icon and in the status bar
+- VS Code notifications with Do Not Disturb, preview and mute-while-debugging settings
+- Copy selection for chat, toggle shortcut, move view and zoom
