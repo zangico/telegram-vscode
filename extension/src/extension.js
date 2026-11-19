@@ -108,7 +108,7 @@ function updateIndicators() {
         sidebarView.badge = unread ? { value: unread, tooltip: `${unread} unread chat${unread === 1 ? '' : 's'}` } : undefined;
     }
     const show = config().get('statusBar.enabled');
-    unreadItem.text = `$(comment) ${unread}`;
+    unreadItem.text = `$(send) ${unread}`;
     unreadItem.tooltip = `${unread} unread Telegram chat${unread === 1 ? '' : 's'}`;
     if (show && unread) unreadItem.show();
     else unreadItem.hide();
@@ -166,7 +166,7 @@ function activate(context) {
     unreadItem.command = 'telegramWebview.focus';
     dndItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
     dndItem.name = 'Telegram Do Not Disturb';
-    dndItem.text = '$(bell-slash)';
+    dndItem.text = '$(bell-slash) $(send)';
     dndItem.tooltip = 'Telegram Do Not Disturb is on (click to turn it off)';
     dndItem.command = 'telegram-vscode.toggleDoNotDisturb';
 

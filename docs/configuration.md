@@ -15,7 +15,7 @@ All settings are defined in `extension/package.json` under `contributes.configur
 | `telegram-vscode.notifications.enabled` | boolean | `true` | Show Telegram notifications as VS Code information messages. |
 | `telegram-vscode.notifications.showPreview` | boolean | `true` | Include the message text in the notification. |
 | `telegram-vscode.notifications.muteWhileDebugging` | boolean | `true` | Skip notifications while a debug session is active. |
-| `telegram-vscode.statusBar.enabled` | boolean | `true` | Show the unread counter and the Do Not Disturb indicator in the status bar. |
+| `telegram-vscode.statusBar.enabled` | boolean | `true` | Show the unread counter (paper plane and count, `$(send) N`) and the Do Not Disturb indicator in the status bar. The paper plane keeps them apart from the WhatsApp Sidebar items. |
 | `telegram-vscode.showSupportButton` | boolean | `true` | Shows the heart (Buy Me a Coffee) button in the Telegram sidebar header. Does not restart the server. |
 
 Proxy types map to these URL schemes (`extension/src/proxyUrl.js`):
@@ -31,7 +31,7 @@ Proxy types map to these URL schemes (`extension/src/proxyUrl.js`):
 
 | Command | Meaning |
 |---|---|
-| **Telegram: Toggle Do Not Disturb** (`telegram-vscode.toggleDoNotDisturb`) | Mutes or unmutes notifications. Stored in the extension's global state; the status bar shows `$(bell-slash)` while it is on (click it to turn it off). |
+| **Telegram: Toggle Do Not Disturb** (`telegram-vscode.toggleDoNotDisturb`) | Mutes or unmutes notifications. Stored in the extension's global state; the status bar shows a bell-slash next to the paper plane (`$(bell-slash) $(send)`) while it is on (click it to turn it off). |
 | **Telegram: Copy Selection for Chat** (`telegram-vscode.sendSelection`) | In the editor context menu when text is selected. Copies the selection as a code block (three backticks around the code) to the clipboard and reveals the sidebar; paste it into a chat. |
 | **Telegram: Toggle Chat** (`telegram-vscode.toggle`) | `Ctrl+Alt+G` (`Cmd+Alt+G` on macOS). Closes the sidebar if the Telegram view is visible, otherwise focuses it. |
 | **Telegram: Move View...** (`telegram-vscode.moveView`) | Focuses the view and opens VS Code's "Move View" picker (bottom panel, secondary sidebar...). Dragging the activity-bar icon also works. |
