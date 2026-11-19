@@ -77,6 +77,10 @@ Fix for the proxy script not running on macos
 - Configurable local port (`telegram-vscode.server.port`) with automatic fallback to the next 9 ports when it is used by another program
 - Settings and Buy Me a Coffee buttons in the sidebar header
 
+### 2.1.1
+
+- New icon
+
 ### 2.1.0
 
 - The extension is now Telegram Sidebar, published by `zangico`; the new id is `zangico.telegram-sidebar`

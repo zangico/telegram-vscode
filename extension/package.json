@@ -2,7 +2,7 @@
   "name": "telegram-sidebar",
   "displayName": "Telegram Sidebar",
   "description": "Telegram for VSCode",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "publisher": "zangico",
   "icon": "images/icon.png",
   "sponsor": {
