@@ -11,7 +11,7 @@ Telegram for VSCode: use Telegram Web inside VS Code, in the sidebar or in an ed
 - `Telegram: Copy Selection for Chat` (editor context menu) copies the selected code as a code block; paste it into a chat.
 - `Telegram: Toggle Chat` (`Ctrl+Alt+G`, `Cmd+Alt+G` on macOS) shows or hides the sidebar.
 - `Telegram: Move View...` moves Telegram to the bottom panel or the secondary sidebar (dragging the activity-bar icon works too).
-- `telegram-vscode.zoom` scales the Telegram view (50-200%).
+- `telegram-sidebar.zoom` scales the Telegram view (50-200%).
 
 ## Usage
 
@@ -27,16 +27,16 @@ Log in with the QR code or your phone number.
 
 Set these in your user settings (Settings > Telegram, or the gear icon at the top of the Telegram sidebar):
 
-- `telegram-vscode.proxy.type`: `none` (default), `http`, `https`, `socks4` or `socks5`
-- `telegram-vscode.proxy.host`: proxy host name or IP (IPv6 in square brackets)
-- `telegram-vscode.proxy.port`: proxy port
-- `telegram-vscode.proxy.username`: user name, if the proxy needs one
+- `telegram-sidebar.proxy.type`: `none` (default), `http`, `https`, `socks4` or `socks5`
+- `telegram-sidebar.proxy.host`: proxy host name or IP (IPv6 in square brackets)
+- `telegram-sidebar.proxy.port`: proxy port
+- `telegram-sidebar.proxy.username`: user name, if the proxy needs one
 
 Local port:
 
-- `telegram-vscode.server.port`: local port of the server that serves Telegram Web (default `49152`, 1024-65535). If it is used by another program, the next 9 ports are tried in order. Telegram keeps a separate login for each port, so changing the port means logging in again.
+- `telegram-sidebar.server.port`: local port of the server that serves Telegram Web (default `49152`, 1024-65535). If it is used by another program, the next 9 ports are tried in order. Telegram keeps a separate login for each port, so changing the port means logging in again.
 
-Other settings: `telegram-vscode.zoom`, `telegram-vscode.notifications.enabled`, `.showPreview`, `.muteWhileDebugging` and `telegram-vscode.statusBar.enabled`. Notifications and the unread counter work once the Telegram view has been opened in the window.
+Other settings: `telegram-sidebar.zoom`, `telegram-sidebar.notifications.enabled`, `.showPreview`, `.muteWhileDebugging` and `telegram-sidebar.statusBar.enabled`. Notifications and the unread counter work once the Telegram view has been opened in the window.
 
 For the password run the command `Telegram: Set Proxy Password`. Invalid settings never fall back to a direct connection: Telegram is not loaded and an error is shown.
 
@@ -50,7 +50,7 @@ If you need help or have any question, feel free to ask at zangico@gmail.com
 
 ## Support
 
-If you find this extension useful, you can [buy me a coffee](https://buymeacoffee.com/zangico) ☕ (also from the heart icon at the top of the Telegram sidebar; hide it with `telegram-vscode.showSupportButton`)
+If you find this extension useful, you can [buy me a coffee](https://buymeacoffee.com/zangico) ☕ (also from the heart icon at the top of the Telegram sidebar; hide it with `telegram-sidebar.showSupportButton`)
 
 ## Release Notes
 
@@ -82,7 +82,7 @@ Fix for the proxy script not running on macos
 - The local server now runs on VS Code's own Node runtime (no more platform binaries), listens on 127.0.0.1 only and stops with the extension
 - The sidebar keeps its state when hidden
 - Telegram Web loads only after the local server is ready
-- Configurable local port (`telegram-vscode.server.port`) with automatic fallback to the next 9 ports when it is used by another program
+- Configurable local port (`telegram-sidebar.server.port`) with automatic fallback to the next 9 ports when it is used by another program
 - Settings and Buy Me a Coffee buttons in the sidebar header
 
 ### 2.1.0
@@ -106,3 +106,7 @@ Fix for the proxy script not running on macos
 ### 2.2.1
 
 - Fix: Telegram did not load, or loaded very slowly, on networks where connecting to Telegram takes more than 250 ms ("Error occurred while trying to proxy", ETIMEDOUT)
+
+### 2.3.0
+
+- Settings renamed from `telegram-vscode.*` to `telegram-sidebar.*`; values set under the old names are moved automatically on the first start

@@ -2,7 +2,7 @@
   "name": "telegram-sidebar",
   "displayName": "Telegram Sidebar",
   "description": "Telegram for VSCode",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "publisher": "zangico",
   "icon": "images/icon.png",
   "sponsor": {
@@ -68,7 +68,7 @@
       "view/title": [
         {
           "command": "telegram-vscode.buyMeACoffee",
-          "when": "view == telegramWebview && config.telegram-vscode.showSupportButton",
+          "when": "view == telegramWebview && config.telegram-sidebar.showSupportButton",
           "group": "navigation@1"
         },
         {
@@ -88,7 +88,7 @@
     "configuration": {
       "title": "Telegram",
       "properties": {
-        "telegram-vscode.server.port": {
+        "telegram-sidebar.server.port": {
           "type": "integer",
           "minimum": 1024,
           "maximum": 65535,
@@ -97,7 +97,7 @@
           "order": 10,
           "markdownDescription": "Local port that serves Telegram Web to VS Code. If it is used by another program, the next 9 ports are tried in order. Telegram keeps a separate login for each port, so changing it means logging in again."
         },
-        "telegram-vscode.proxy.type": {
+        "telegram-sidebar.proxy.type": {
           "type": "string",
           "enum": ["none", "http", "https", "socks4", "socks5"],
           "enumDescriptions": [
@@ -112,14 +112,14 @@
           "order": 0,
           "description": "Proxy used for all Telegram traffic."
         },
-        "telegram-vscode.proxy.host": {
+        "telegram-sidebar.proxy.host": {
           "type": "string",
           "default": "",
           "scope": "application",
           "order": 1,
           "description": "Proxy host name or IP address. Put IPv6 addresses in square brackets, for example [::1]."
         },
-        "telegram-vscode.proxy.port": {
+        "telegram-sidebar.proxy.port": {
           "type": ["integer", "null"],
           "minimum": 1,
           "maximum": 65535,
@@ -128,14 +128,14 @@
           "order": 2,
           "description": "Proxy port."
         },
-        "telegram-vscode.proxy.username": {
+        "telegram-sidebar.proxy.username": {
           "type": "string",
           "default": "",
           "scope": "application",
           "order": 3,
           "markdownDescription": "Proxy user name, if the proxy requires authentication. Set the password with the **Telegram: Set Proxy Password** command."
         },
-        "telegram-vscode.zoom": {
+        "telegram-sidebar.zoom": {
           "type": "integer",
           "minimum": 50,
           "maximum": 200,
@@ -144,35 +144,35 @@
           "order": 30,
           "markdownDescription": "Zoom of the Telegram view, in percent."
         },
-        "telegram-vscode.notifications.enabled": {
+        "telegram-sidebar.notifications.enabled": {
           "type": "boolean",
           "default": true,
           "scope": "application",
           "order": 40,
           "markdownDescription": "Show a VS Code notification for each Telegram notification. The Telegram view must have been opened in this window."
         },
-        "telegram-vscode.notifications.showPreview": {
+        "telegram-sidebar.notifications.showPreview": {
           "type": "boolean",
           "default": true,
           "scope": "application",
           "order": 41,
           "markdownDescription": "Include the message text in notifications."
         },
-        "telegram-vscode.notifications.muteWhileDebugging": {
+        "telegram-sidebar.notifications.muteWhileDebugging": {
           "type": "boolean",
           "default": true,
           "scope": "application",
           "order": 42,
           "markdownDescription": "Do not show notifications while a debug session is active. Use **Telegram: Toggle Do Not Disturb** to mute them manually."
         },
-        "telegram-vscode.statusBar.enabled": {
+        "telegram-sidebar.statusBar.enabled": {
           "type": "boolean",
           "default": true,
           "scope": "application",
           "order": 50,
           "markdownDescription": "Show the unread chats counter and the Do Not Disturb indicator in the status bar."
         },
-        "telegram-vscode.showSupportButton": {
+        "telegram-sidebar.showSupportButton": {
           "type": "boolean",
           "default": true,
           "scope": "application",

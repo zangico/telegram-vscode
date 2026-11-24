@@ -43,6 +43,8 @@ npm test        # node --test
 
 `extension/test/bridge.test.js` covers `bridgeToExtension` with a fake scope: no stand-ins outside a frame or in a worker, `navigator.setAppBadge`/`clearAppBadge` posted as unread counts (invalid values as 0), the `Notification` stand-in (granted permission, `requestPermission` with promise and callback, posted title and body) and the shape of `PATCH`.
 
+`extension/test/migrateSettings.test.js` covers the move of `telegram-vscode.*` values: an unset new key gets the old value, a set new key keeps its value, and the old key is removed in both cases.
+
 `extension/test/server.test.js` forks the real `server.js` with `{ proxyUrl: null, port }` on a random base port:
 
 - A foreign HTTP server on the base port: the server replies `{ ready: base + 1 }`.

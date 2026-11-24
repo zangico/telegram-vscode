@@ -2,8 +2,9 @@ const vscode = require('vscode');
 const { fork } = require('child_process');
 const path = require('path');
 const { buildProxyUrl } = require('./proxyUrl');
+const { migrateSettings } = require('./migrateSettings');
 
-const SECTION = 'telegram-vscode';
+const SECTION = 'telegram-sidebar';
 const PASSWORD_KEY = 'telegram-vscode.proxy.password';
 const DND_KEY = 'telegram-vscode.doNotDisturb';
 
@@ -34,7 +35,7 @@ async function startServer(secrets) {
     const port = settings.get('server.port');
     if (!Number.isInteger(port) || port < 1024 || port > 65535) {
         logger.appendLine(`Invalid server port ${port}, server not started`);
-        vscode.window.showErrorMessage('Telegram: "telegram-vscode.server.port" must be a number between 1024 and 65535.');
+        vscode.window.showErrorMessage('Telegram: "telegram-sidebar.server.port" must be a number between 1024 and 65535.');
         return;
     }
     let proxyUrl;
@@ -51,7 +52,7 @@ async function startServer(secrets) {
     } catch (error) {
         // A proxy was requested: never fall back to a direct connection.
         logger.appendLine(`Proxy settings are invalid, server not started: ${error.message}`);
-        vscode.window.showErrorMessage(`Telegram: ${error.message}. Fix the "telegram-vscode.proxy" settings.`);
+        vscode.window.showErrorMessage(`Telegram: ${error.message}. Fix the "telegram-sidebar.proxy" settings.`);
         return;
     }
 
@@ -66,7 +67,7 @@ async function startServer(secrets) {
     child.on('message', (message) => {
         if (child !== server) return; // late message from a server that was replaced
         if (message.ready) setServerPort(message.ready);
-        if (message.error) vscode.window.showErrorMessage(`Telegram: ${message.error}. Change "telegram-vscode.server.port".`);
+        if (message.error) vscode.window.showErrorMessage(`Telegram: ${message.error}. Change "telegram-sidebar.server.port".`);
     });
     child.on('exit', (code, signal) => logger.appendLine(`Server stopped (${signal || `exit code ${code}`})`));
     child.send({ proxyUrl, port });
@@ -158,9 +159,15 @@ async function setProxyPassword(secrets) {
     else await secrets.delete(PASSWORD_KEY);
 }
 
-function activate(context) {
+async function activate(context) {
     const { secrets } = context;
     globalState = context.globalState;
+    try {
+        const keys = Object.keys(context.extension.packageJSON.contributes.configuration.properties);
+        await migrateSettings(vscode.workspace.getConfiguration(), keys, vscode.ConfigurationTarget.Global);
+    } catch (error) {
+        logger.appendLine(`Could not move the old telegram-vscode.* settings: ${error.message}`);
+    }
     unreadItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0);
     unreadItem.name = 'Telegram unread chats';
     unreadItem.command = 'telegramWebview.focus';
