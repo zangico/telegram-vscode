@@ -10,6 +10,8 @@
 | Proxy URL builder | `extension/src/proxyUrl.js` | Extension host (and tests) | `buildProxyUrl(settings, password)`: validates settings, returns a proxy URL, `null` (direct) or throws. |
 | Tests | `extension/test/proxy.test.js`, `extension/test/server.test.js` | Node (`node --test`) | Unit tests for `proxyUrl.js` and `patch.js`; `server.test.js` forks the real server to test the port fallback. |
 
+At startup `server.js` calls `net.setDefaultAutoSelectFamilyAttemptTimeout(2000)`: Node connects to a host with several addresses one address at a time and abandons each attempt after 250 ms by default, which made every attempt fail on networks where the TCP connection to Telegram takes longer (ETIMEDOUT, then EADDRNOTAVAIL on IPv6).
+
 Constants in `server.js`: `HOST = '127.0.0.1'`, `PORT_ATTEMPTS = 10`, `PING_PATH = '/__telegram-vscode/ping'`, `PING_REPLY = 'telegram-sidebar'`, `UPSTREAM = ORIGIN = 'https://web.telegram.org'`, `DC_PATH = /^\/__tg\/([a-z0-9-]+)(\/.*)?$/`.
 
 Command and view IDs: `telegram-vscode.openTelegramWeb`, `telegram-vscode.setProxyPassword`, `telegram-vscode.openSettings`, `telegram-vscode.buyMeACoffee`, `telegram-vscode.toggleDoNotDisturb`, `telegram-vscode.sendSelection`, `telegram-vscode.toggle`, `telegram-vscode.moveView`, view `telegramWebview` in container `telegram-sidebar`, webview panel type `telegramWebviewTab`. Secret key: `telegram-vscode.proxy.password`. Output channel: `Telegram-VSCode`.

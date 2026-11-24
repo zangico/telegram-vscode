@@ -2,6 +2,7 @@
 // (see extension.js), receives its configuration over IPC ({ proxyUrl, port }) and answers
 // { ready: <port> } once a server answers on that port, or { error } when no port is usable.
 const http = require('http');
+const net = require('net');
 const { createProxyMiddleware, responseInterceptor } = require('http-proxy-middleware');
 const { SocksProxyAgent } = require('socks-proxy-agent');
 const { HttpsProxyAgent } = require('https-proxy-agent');
@@ -15,6 +16,10 @@ const UPSTREAM = 'https://web.telegram.org';
 const ORIGIN = 'https://web.telegram.org';
 // /__tg/<subdomain>/<path> -> https://<subdomain>.web.telegram.org/<path> (rewritten by patch.js)
 const DC_PATH = /^\/__tg\/([a-z0-9-]+)(\/.*)?$/;
+
+// Node tries the addresses of a host one after the other and abandons each attempt after 250 ms by default,
+// so on a slow network every attempt is cut short and the connection fails with ETIMEDOUT.
+net.setDefaultAutoSelectFamilyAttemptTimeout(2000);
 
 function createAgent(proxyUrl) {
     if (!proxyUrl) return undefined;

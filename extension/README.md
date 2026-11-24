@@ -102,3 +102,7 @@ Fix for the proxy script not running on macos
 - Unread badge on the sidebar icon and in the status bar
 - VS Code notifications with Do Not Disturb, preview and mute-while-debugging settings
 - Copy selection for chat, toggle shortcut, move view and zoom
+
+### 2.2.1
+
+- Fix: Telegram did not load, or loaded very slowly, on networks where connecting to Telegram takes more than 250 ms ("Error occurred while trying to proxy", ETIMEDOUT)
